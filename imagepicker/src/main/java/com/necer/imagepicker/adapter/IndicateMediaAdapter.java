@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.necer.imagepicker.R;
 import com.necer.imagepicker.entity.Item;
-import com.necer.imagepicker.entity.MediaItem;
 
 import java.util.List;
 
@@ -50,8 +49,8 @@ public class IndicateMediaAdapter extends NAdapter<Item> {
             flBg.setBackgroundResource(R.drawable.bg_image_unselect);
         }
 
-        if (indicateItem.mediaItem != null) {
-            Glide.with(mContext).load(indicateItem.mediaItem.uri).into(imageView);
+        if (indicateItem.uri != null) {
+            Glide.with(mContext).load(indicateItem.uri).into(imageView);
         } else {
             Glide.with(mContext).load(R.drawable.default_image).into(imageView);
         }
@@ -59,9 +58,10 @@ public class IndicateMediaAdapter extends NAdapter<Item> {
     }
 
 
-    public void setSelectIndicate(MediaItem mediaItem) {
-        Item indicateItem = mList.get(selectIndex);
-        indicateItem.mediaItem = mediaItem;
+    public void setSelectIndicate(Item mediaItem) {
+        //置换一下，吧列表中的Item的uri替换成相册中uri
+        Item item = mList.get(selectIndex);
+        item.uri = mediaItem.uri;
 
         if (selectIndex < mList.size()-1) {
             selectIndex++;
@@ -89,8 +89,8 @@ public class IndicateMediaAdapter extends NAdapter<Item> {
 
     public boolean isComplete() {
         boolean isComplete = true;
-        for (Item indicateItem : mList) {
-            if (indicateItem.isRequired && indicateItem.mediaItem == null) {
+        for (Item item : mList) {
+            if (item.isRequired && item.uri == null) {
                 isComplete = false;
                 break;
             }

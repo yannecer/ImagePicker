@@ -20,7 +20,7 @@ public class SingleFragment extends BaseImageFragment implements NAdapter.OnItem
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_single;
+        return R.layout.fragment_media;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class SingleFragment extends BaseImageFragment implements NAdapter.OnItem
     }
 
     @Override
-    protected void setMediaList(List<MediaItem> mediaItemList) {
+    protected void setMediaList(List<Item> mediaItemList) {
         mediaAdapter.replaceData(mediaItemList);
     }
 
@@ -57,7 +57,6 @@ public class SingleFragment extends BaseImageFragment implements NAdapter.OnItem
 
     @Override
     public void onItemClick(View itemView, MediaItem mediaItem, int position) {
-
 
         if (onSingleSelectItemListener != null) {
             onSingleSelectItemListener.onSingleSelectItem(mediaItem);

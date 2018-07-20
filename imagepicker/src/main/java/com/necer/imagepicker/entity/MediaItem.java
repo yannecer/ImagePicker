@@ -105,7 +105,6 @@ public class MediaItem implements Parcelable {
     public boolean isImage() {
         return mimeType.equals(MimeType.JPEG.toString())
                 || mimeType.equals(MimeType.PNG.toString())
-                || mimeType.equals(MimeType.GIF.toString())
                 || mimeType.equals(MimeType.BMP.toString())
                 || mimeType.equals(MimeType.WEBP.toString());
     }
@@ -140,6 +139,7 @@ public class MediaItem implements Parcelable {
                     || (uri == null && other.uri == null))
                 && size == other.size
                 && duration == other.duration;
+
     }
 
     @Override
@@ -152,4 +152,7 @@ public class MediaItem implements Parcelable {
         result = 31 * result + Long.valueOf(duration).hashCode();
         return result;
     }
+
+
+
 }

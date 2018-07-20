@@ -35,11 +35,12 @@ public abstract class BaseImageFragment extends Fragment {
         mAlbumMediaCollection.onCreate(getActivity(), new AlbumMediaCollection.AlbumMediaCallbacks() {
             @Override
             public void onAlbumMediaLoad(Cursor cursor) {
-                List<MediaItem> itemList = new ArrayList<>();
+                List<Item> itemList = new ArrayList<>();
                 for (int i = 0; i < cursor.getCount(); i++) {
                     boolean b = cursor.moveToPosition(i);
                     if (b && isDataValid(cursor)) {
-                        itemList.add(MediaItem.valueOf(cursor));
+                        MediaItem mediaItem = MediaItem.valueOf(cursor);
+                        itemList.add(new Item(mediaItem.uri));
                     }
                 }
                 setMediaList(itemList);
@@ -62,12 +63,11 @@ public abstract class BaseImageFragment extends Fragment {
         return cursor != null && !cursor.isClosed();
     }
 
-
     protected abstract int getLayoutId();
 
     protected abstract void initView(View view);
 
-    protected abstract void setMediaList(List<MediaItem> mediaItemList);
+    protected abstract void setMediaList(List<Item> mediaItemList);
 
     protected abstract boolean isComplete();
 

@@ -10,7 +10,6 @@ import com.necer.imagepicker.adapter.AlbumMediaAdapter;
 import com.necer.imagepicker.adapter.IndicateMediaAdapter;
 import com.necer.imagepicker.adapter.NAdapter;
 import com.necer.imagepicker.entity.Item;
-import com.necer.imagepicker.entity.MediaItem;
 import com.necer.imagepicker.widget.SpacesItemDecoration;
 
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public class BatchFragment extends BaseImageFragment implements NAdapter.OnItemC
     }
 
     @Override
-    protected void setMediaList(List<MediaItem> mediaItemList) {
+    protected void setMediaList(List<Item> mediaItemList) {
         mediaAdapter.replaceData(mediaItemList);
     }
 
@@ -69,12 +68,10 @@ public class BatchFragment extends BaseImageFragment implements NAdapter.OnItemC
     @Override
     public void onItemClick(View itemView, Object object, int position) {
 
-        if (object instanceof MediaItem) {
-            MediaItem mediaItem = (MediaItem) object;
-            indicateMediaAdapter.setSelectIndicate(mediaItem);
-
+        if (object instanceof Item) {
+            Item Item = (Item) object;
+            indicateMediaAdapter.setSelectIndicate(Item);
         } else {
-           // Item indicateItem = (Item) object;
             indicateMediaAdapter.setSelectIndex(position);
         }
     }

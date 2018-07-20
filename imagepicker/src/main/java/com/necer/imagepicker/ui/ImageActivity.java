@@ -72,7 +72,8 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
         indicateItems.add(new Item(8, "车身5", false));
 
         //imageFragment = BatchFragment.newInstance(indicateItems);
-        imageFragment = new SingleFragment().setOnSingleSelectItemListener(this);
+        //imageFragment = new SingleFragment().setOnSingleSelectItemListener(this);
+        imageFragment = new MultipleFragment();
 
         mSure.setVisibility(imageFragment instanceof SingleFragment ? View.GONE : View.VISIBLE);
 
@@ -114,8 +115,8 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
             if (imageFragment.isComplete()) {
                 List<Item> selectItem = imageFragment.getSelectItem();
                 for (Item item : selectItem) {
-                    if (item.mediaItem != null)
-                        MyLog.d("item::" + item.mediaItem.uri);
+                    if (item.uri != null)
+                        MyLog.d("item::" + item.uri);
                 }
             } else {
                 Toast.makeText(this,imageFragment.getNotCompleteMessage() , Toast.LENGTH_SHORT).show();
