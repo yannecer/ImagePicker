@@ -1,0 +1,16 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.necer.imagepicker" >
+
+
+
+    <application>
+
+
+        <activity android:name="com.necer.imagepicker.ui.ImageActivity"/>
+
+
+    </application>
+
+
+</manifest>
+
