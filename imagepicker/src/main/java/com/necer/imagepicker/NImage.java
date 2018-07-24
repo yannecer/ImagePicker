@@ -1,16 +1,12 @@
 package com.necer.imagepicker;
-
 import android.app.Activity;
 import android.content.Intent;
-
 import com.necer.imagepicker.entity.Item;
 import com.necer.imagepicker.entity.SelectType;
 import com.necer.imagepicker.ui.ImageActivity;
-
 import java.util.ArrayList;
 
 public class NImage {
-
 
     public static void toSelect(Activity activity, SelectType selectType, int requestCode) {
         Intent intent = new Intent(activity, ImageActivity.class);
@@ -24,6 +20,4 @@ public class NImage {
         intent.putExtra("itemList", itemList);
         activity.startActivityForResult(intent, requestCode);
     }
-
-
 }
