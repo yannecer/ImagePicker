@@ -21,11 +21,14 @@ import com.necer.imagepicker.adapter.AlbumsAdapter;
 import com.necer.imagepicker.entity.Album;
 import com.necer.imagepicker.entity.Item;
 import com.necer.imagepicker.entity.MediaItem;
+import com.necer.imagepicker.entity.SelectType;
 import com.necer.imagepicker.model.AlbumCollection;
 import com.necer.imagepicker.utils.StatusbarUI;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.necer.imagepicker.entity.SelectType.BATCH;
 
 public class ImageActivity extends AppCompatActivity implements View.OnClickListener, AlbumCollection.AlbumCallbacks, SingleFragment.OnSingleSelectItemListener {
 
@@ -55,25 +58,33 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
         findViewById(R.id.tv_sure).setOnClickListener(this);
         findViewById(R.id.iv_back).setOnClickListener(this);
 
-
         mAlbumCollection.onCreate(this, this);
         mAlbumCollection.onRestoreInstanceState(savedInstanceState);
         mAlbumCollection.loadAlbums();
 
-        ArrayList<Item> indicateItems = new ArrayList<>();
-        indicateItems.add(new Item(0, "车身", true));
-        indicateItems.add(new Item(1, "车身钱", true));
-        indicateItems.add(new Item(2, "车身后", false));
-        indicateItems.add(new Item(3, "车身22", true));
-        indicateItems.add(new Item(4, "车身1", false));
-        indicateItems.add(new Item(5, "车身2", false));
-        indicateItems.add(new Item(6, "车身3", true));
-        indicateItems.add(new Item(7, "车身4", false));
-        indicateItems.add(new Item(8, "车身5", false));
 
-        //imageFragment = BatchFragment.newInstance(indicateItems);
-        //imageFragment = new SingleFragment().setOnSingleSelectItemListener(this);
-        imageFragment = new MultipleFragment();
+
+        SelectType selectType = (SelectType) getIntent().getSerializableExtra("selectType");
+        ArrayList<Item> itemList = (ArrayList<Item>) getIntent().getSerializableExtra("itemList");
+
+        if (selectType == BATCH && itemList == null) {
+            throw new RuntimeException("批量上传，需要传入Indicate列表！");
+        }
+
+        switch (selectType) {
+            case BATCH:
+                imageFragment = BatchFragment.newInstance(itemList);
+                break;
+            case MULTIPLE:
+                imageFragment = new MultipleFragment();
+                break;
+            case SINGLE:
+                imageFragment = new SingleFragment().setOnSingleSelectItemListener(this);
+                break;
+            default:
+                throw new RuntimeException("请选择选取类型");
+        }
+
 
         mSure.setVisibility(imageFragment instanceof SingleFragment ? View.GONE : View.VISIBLE);
 
@@ -119,7 +130,7 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
                         MyLog.d("item::" + item.uri);
                 }
             } else {
-                Toast.makeText(this,imageFragment.getNotCompleteMessage() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, imageFragment.getNotCompleteMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -157,6 +168,6 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
     //单张的图片选择
     @Override
     public void onSingleSelectItem(MediaItem mediaItem) {
-        MyLog.d("mediaItem::::"+mediaItem.uri);
+        MyLog.d("mediaItem::::" + mediaItem.uri);
     }
 }

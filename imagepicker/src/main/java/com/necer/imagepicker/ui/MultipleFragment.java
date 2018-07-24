@@ -9,7 +9,6 @@ import com.necer.imagepicker.adapter.MultipleMediaAdapter;
 import com.necer.imagepicker.adapter.NAdapter;
 import com.necer.imagepicker.entity.Item;
 import com.necer.imagepicker.widget.SpacesItemDecoration;
-
 import java.util.List;
 
 /**

@@ -20,9 +20,6 @@ import java.util.List;
  */
 public class BatchFragment extends BaseImageFragment implements NAdapter.OnItemClickListener, IndicateMediaAdapter.OnSelectIndexlistener {
 
-
-
-
     private AlbumMediaAdapter mediaAdapter;
     private IndicateMediaAdapter indicateMediaAdapter;
     private RecyclerView imageRecyclerView;
