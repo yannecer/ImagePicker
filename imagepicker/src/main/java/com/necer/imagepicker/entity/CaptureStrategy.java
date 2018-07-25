@@ -15,7 +15,9 @@
  */
 package com.necer.imagepicker.entity;
 
-public class CaptureStrategy {
+import java.io.Serializable;
+
+public class CaptureStrategy implements Serializable {
 
     public final boolean isPublic;
     public final String authority;

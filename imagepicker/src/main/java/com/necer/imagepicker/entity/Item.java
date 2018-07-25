@@ -15,6 +15,8 @@ public class Item implements Serializable {
     public boolean isRequired;
     public Uri uri;
 
+    public boolean cameraEnable;
+
 
     public Item(int id, String name, boolean isRequired) {
         this.id = id;
@@ -26,6 +28,10 @@ public class Item implements Serializable {
         this.uri = uri;
     }
 
+    public Item(boolean cameraEnable) {
+        this.cameraEnable = cameraEnable;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Item)) {
@@ -35,4 +41,5 @@ public class Item implements Serializable {
         Item item = (Item) obj;
         return uri.toString().equals(item.uri.toString());
     }
+
 }

@@ -1,5 +1,7 @@
 package com.necer.imagepicker.ui;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,16 +21,15 @@ import com.necer.imagepicker.MyLog;
 import com.necer.imagepicker.R;
 import com.necer.imagepicker.adapter.AlbumsAdapter;
 import com.necer.imagepicker.entity.Album;
+import com.necer.imagepicker.entity.CaptureStrategy;
 import com.necer.imagepicker.entity.Item;
-import com.necer.imagepicker.entity.MediaItem;
 import com.necer.imagepicker.entity.SelectType;
 import com.necer.imagepicker.model.AlbumCollection;
+import com.necer.imagepicker.utils.PathUtils;
 import com.necer.imagepicker.utils.StatusbarUI;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.necer.imagepicker.entity.SelectType.BATCH;
 
 public class ImageActivity extends AppCompatActivity implements View.OnClickListener, AlbumCollection.AlbumCallbacks, SingleFragment.OnSingleSelectItemListener {
 
@@ -63,11 +64,18 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
         mAlbumCollection.loadAlbums();
 
 
-
         SelectType selectType = (SelectType) getIntent().getSerializableExtra("selectType");
-        ArrayList<Item> itemList = (ArrayList<Item>) getIntent().getSerializableExtra("itemList");
+        int maxCount = getIntent().getIntExtra("maxCount", 9);
 
-        if (selectType == BATCH && itemList == null) {
+        MyLog.d("maxCount::ImageActivity::"+maxCount);
+
+
+        boolean cameraEnable = getIntent().getBooleanExtra("cameraEnable", false);
+        CaptureStrategy captureStrategy = (CaptureStrategy) getIntent().getSerializableExtra("captureStrategy");
+        ArrayList<Item> itemList = (ArrayList<Item>) getIntent().getSerializableExtra("indicateItems");
+
+
+        if (selectType == SelectType.BATCH && itemList == null) {
             throw new RuntimeException("批量上传，需要传入Indicate列表！");
         }
 
@@ -76,10 +84,10 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
                 imageFragment = BatchFragment.newInstance(itemList);
                 break;
             case MULTIPLE:
-                imageFragment = new MultipleFragment();
+                imageFragment = MultipleFragment.newInstance(maxCount);
                 break;
             case SINGLE:
-                imageFragment = new SingleFragment().setOnSingleSelectItemListener(this);
+                imageFragment = SingleFragment.newInstance(cameraEnable, captureStrategy).setOnSingleSelectItemListener(this);
                 break;
             default:
                 throw new RuntimeException("请选择选取类型");
@@ -124,11 +132,8 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
             finish();
         } else if (id == R.id.tv_sure) {
             if (imageFragment.isComplete()) {
-                List<Item> selectItem = imageFragment.getSelectItem();
-                for (Item item : selectItem) {
-                    if (item.uri != null)
-                        MyLog.d("item::" + item.uri);
-                }
+                ArrayList<Item> selectItem = imageFragment.getSelectItem();
+                setMultipleFinish( selectItem);
             } else {
                 Toast.makeText(this, imageFragment.getNotCompleteMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -167,7 +172,29 @@ public class ImageActivity extends AppCompatActivity implements View.OnClickList
 
     //单张的图片选择
     @Override
-    public void onSingleSelectItem(MediaItem mediaItem) {
-        MyLog.d("mediaItem::::" + mediaItem.uri);
+    public void onSingleSelectItem(String imagePath) {
+        setSingleFinish(imagePath);
     }
+
+    private void setSingleFinish(String imagePath) {
+        Intent intent = new Intent();
+        intent.putExtra("single", imagePath);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
+
+    private void setMultipleFinish(List<Item> itemList) {
+        Intent intent = new Intent();
+
+        ArrayList<String> paths = new ArrayList<>();
+        for (Item item : itemList) {
+            paths.add(PathUtils.getPath(this, item.uri));
+        }
+
+        intent.putStringArrayListExtra("multiple", paths);
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
+
+
 }

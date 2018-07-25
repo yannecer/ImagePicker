@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.necer.imagepicker.R;
 import com.necer.imagepicker.entity.Item;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IndicateMediaAdapter extends NAdapter<Item> {
@@ -98,7 +99,7 @@ public class IndicateMediaAdapter extends NAdapter<Item> {
         return isComplete;
     }
 
-    public List<Item> getSelectItem() {
-        return mList;
+    public ArrayList<Item> getSelectItem() {
+        return (ArrayList<Item>) mList;
     }
 }

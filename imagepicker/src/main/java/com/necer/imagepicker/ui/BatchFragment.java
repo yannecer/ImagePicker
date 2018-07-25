@@ -79,7 +79,7 @@ public class BatchFragment extends BaseImageFragment implements NAdapter.OnItemC
         indicateRecycleView.getLayoutManager().scrollToPosition(position);
     }
 
-    public List<Item> getSelectItem() {
+    public ArrayList<Item> getSelectItem() {
         return indicateMediaAdapter.getSelectItem();
     }
 

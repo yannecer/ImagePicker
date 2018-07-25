@@ -71,7 +71,7 @@ public abstract class BaseImageFragment extends Fragment {
 
     protected abstract boolean isComplete();
 
-    protected abstract List<Item> getSelectItem();
+    protected abstract ArrayList<Item> getSelectItem();
 
     protected abstract String getNotCompleteMessage();
 
